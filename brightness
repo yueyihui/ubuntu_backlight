@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+	bt=0.6
+else
+	bt=$1
+fi
+
+in_use=`xrandr | awk -F ' ' '{print $2}'`
+in_use_=`echo $in_use | awk '{split($0,a," ");
+	for(i in a)
+		if(a[i]=="connected") print i}'`
+
+device=`xrandr | awk -F ' ' '{print $1}'`
+array=(${device// / })  
+device_=${array[$in_use_-1]}
+
+xrandr --output $device_ --brightness $bt
